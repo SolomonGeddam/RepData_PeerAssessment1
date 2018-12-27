@@ -8,7 +8,6 @@ output:
 
 ## Loading and preprocessing the data
 
-```{r}
 # baseDir will be prefixing all data accesses
 baseDir <- "."
 
@@ -57,11 +56,11 @@ sumStepsPerDay <- aggregate(steps ~ date, data=dataset, FUN="sum", na.exclude=T)
 meanStepsPerInterval <- aggregate(steps ~ sInterval, data=dataset, FUN="mean", na.exclude=T)
 #sumStepsPerDay
 #meanStepsPerInterval$steps
-```
+
 
 ## What is mean total number of steps taken per day?
-```{r}
-hist(sumStepsPerDay$steps, breaks=10, main="Total number of steps per day", xlab="Steps per day")
+
+histogram(sumStepsPerDay$steps, breaks=10, main="Total number of steps per day", xlab="Steps per day")
 dev.copy(png, "Histogram of total number of steps taken each day.png", width = 480, height = 480)
 dev.off()
 
@@ -69,18 +68,18 @@ dev.off()
 mean(sumStepsPerDay$steps, na.rm=TRUE)
 
 median(sumStepsPerDay$steps, na.rm=TRUE)
-```
+
 
 ## What is the average daily activity pattern?
-```{r}
+
 xyplot(steps ~ sInterval, data=meanStepsPerInterval, type="l", grid=TRUE, ylab="Number of steps", xlab="5-min. intervals from midnight", main="Average number of steps by 5-minutes intervals")
 dev.copy(png, "Average number of steps taken.png", width = 480, height = 480)
 dev.off()
 
 intv <- meanStepsPerInterval$sInterval[which.max(meanStepsPerInterval$steps)]
-```
+
 ## Imputing missing values
-```{r}
+
 misst <- sum(is.na(dataset$steps))
 misst
 
@@ -125,9 +124,8 @@ meanStepsPerIntervalNoMissing <- aggregate(steps ~ interval, data=dataset, FUN="
 xyplot(meanStepsPerIntervalNoMissing$steps ~ meanStepsPerIntervalNoMissing$interval,type="l", grid=T, ylab="Number of steps", xlab="5-min. intervals from midnight", main="Average number of steps by 5-minutes intervals, missing values estimated")
 dev.copy(png, "2 - Average number of steps taken.png", width = 480, height = 480)
 dev.off()
-```
+
 ## Are there differences in activity patterns between weekdays and weekends?
-```{r}
 datasetNoMissing$day <- "weekday"
 datasetNoMissing$day[weekdays(as.Date(datasetNoMissing$date), abb=T) %in% c("Sat","Sun")] <- "weekend"
 
@@ -137,4 +135,3 @@ meanStepsPerIntervalNoMissingDay <- aggregate(steps ~ interval + day, data=datas
 xyplot(steps ~ interval | day, data=meanStepsPerIntervalNoMissingDay, type="l", grid=T, layout=c(1,2), ylab="Number of steps", xlab="5-min. intervals from midnight", main="Average  5-min. activity intervals: Weekdays vs. Weekends")
 dev.copy(png, "Weekday vs weekend.png", width = 480, height = 480)
 dev.off()
-```
